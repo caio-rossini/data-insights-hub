@@ -6,7 +6,7 @@
         <div class="card shadow-lg border-0 p-5">
             <div class="text-danger display-1 mb-4"><i class="fa-solid fa-circle-exclamation"></i></div>
             <h3>Are you sure?</h3>
-            <p class="text-muted mb-4">You are about to delete the analyst: <br><strong>"{{ object.name }}"</strong>. This action cannot be undone.</p>
+            <p class="text-muted mb-4">You are about to delete the analyst: <br><strong>"{{ object.username }}"</strong>. This action cannot be undone.</p>
             
             <form action="" method="post">
                 {% csrf_token %}
