@@ -1,0 +1,79 @@
+{% extends "hub/base.html" %}
+
+{% block title %}Project: {{ analysisproject.title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="fa-solid fa-diagram-project text-primary me-2"></i> {{ analysisproject.title }}</h1>
+    <div>
+        <a href="{% url 'hub:project-update' pk=analysisproject.id %}" class="btn btn-outline-secondary me-2">
+            <i class="fa-solid fa-pen"></i> Edit Project
+        </a>
+        <a href="{% url 'hub:toggle-project-assign' pk=analysisproject.id %}" 
+           class="btn {% if user in analysisproject.assignees.all %}btn-danger{% else %}btn-success{% endif %}">
+            {% if user in analysisproject.assignees.all %}
+                <i class="fa-solid fa-user-minus"></i> Unassign Me
+            {% else %}
+                <i class="fa-solid fa-user-plus"></i> Assign Me to Project
+            {% endif %}
+        </a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white fw-bold"><i class="fa-solid fa-circle-info me-2"></i> Project Description</div>
+            <div class="card-body">
+                <p class="card-text text-secondary">{{ analysisproject.description|linebreaks|default:"No description provided." }}</p>
+                <hr>
+                <div class="row">
+                    <div class="col-6">
+                        <small class="text-muted d-block">Domain</small>
+                        <span class="badge bg-info text-dark fs-6">{{ analysisproject.domain.name }}</span>
+                    </div>
+                    <div class="col-6 text-end">
+                        <small class="text-muted d-block">Deadline</small>
+                        <span class="fw-bold"><i class="fa-regular fa-calendar-check me-1"></i> {{ analysisproject.deadline }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white fw-bold"><i class="fa-solid fa-database me-2"></i> Associated Datasets</div>
+            <ul class="list-group list-group-flush">
+                {% for dataset in analysisproject.datasets.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ dataset.name }}
+                        <span class="badge bg-secondary rounded-pill">{{ dataset.format|upper }}</span>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">No datasets linked to this project yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-dark text-white fw-bold"><i class="fa-solid fa-users me-2"></i> Team Members</div>
+            <div class="card-body">
+                {% for assignee in analysisproject.assignees.all %}
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-light rounded-circle p-2 me-3"><i class="fa-solid fa-user-tag text-warning"></i></div>
+                        <div>
+                            <a href="{% url 'hub:analyst-detail' pk=assignee.id %}" class="d-block fw-bold text-decoration-none">
+                                {{ assignee.username }}
+                            </a>
+                            <small class="text-muted">{{ assignee.position|default:"Analyst" }}</small>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted text-center py-4">No analysts assigned yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

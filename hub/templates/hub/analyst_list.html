@@ -1,0 +1,79 @@
+{% extends "hub/base.html" %}
+
+{% block title %}Analysts - Data Insights Hub{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="fa-solid fa-users text-warning me-2"></i> Data Analysts</h1>
+    <a href="{% url 'hub:analyst-create' %}" class="btn btn-warning text-dark fw-bold">
+        <i class="fa-solid fa-user-plus"></i> Hire New Analyst
+    </a>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="get" action="" class="row g-2 align-items-center">
+            <div class="col-sm-9">
+                {{ search_form }}
+            </div>
+            <div class="col-sm-3">
+                <button type="submit" class="btn btn-secondary w-100">
+                    <i class="fa-solid fa-magnifying-glass me-2"></i> Filter
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 rounded-3">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Username</th>
+                    <th>Full Name</th>
+                    <th>Position / Role</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for analyst in analyst_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'hub:analyst-detail' pk=analyst.id %}" class="fw-bold text-decoration-none text-warning">
+                            {{ analyst.username }}
+                        </a>
+                        {% if analyst.id == user.id %}
+                            <span class="badge bg-light text-dark border ms-1">You</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ analyst.first_name }} {{ analyst.last_name }}</td>
+                    <td>
+                        <span class="text-secondary">
+                            <i class="fa-solid fa-briefcase me-1"></i> {{ analyst.position|default:"Junior Analyst" }}
+                        </span>
+                    </td>
+                    <td class="text-end">
+                        <a href="{% url 'hub:analyst-update' pk=analyst.id %}" class="btn btn-sm btn-outline-secondary me-1">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        <a href="{% url 'hub:analyst-delete' pk=analyst.id %}" class="btn btn-sm btn-outline-danger">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center py-4 text-muted">
+                        <i class="fa-solid fa-user-slash display-6 d-block mb-2"></i>
+                        No analysts registered.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% include "hub/includes/pagination.html" %}
+{% endblock %}
