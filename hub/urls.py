@@ -11,7 +11,7 @@ urlpatterns = [
     # ---- Analysis Domain URLs ----
     path(
         "domains/",
-        views.AnalysisDomainListView.as_as_view(),
+        views.AnalysisDomainListView.as_view(),
         name="domain-list"
     ),
     path(
