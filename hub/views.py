@@ -5,7 +5,18 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
-from .models import DataAnalyst, AnalysisDomain, Dataset, AnalysisProject
+from .forms import (
+    AnalysisDomainSearchForm,
+    AnalysisProjectSearchForm,
+    DataAnalystSearchForm,
+    DatasetSearchForm,
+)
+from .models import (
+    AnalysisDomain,
+    AnalysisProject,
+    DataAnalyst,
+    Dataset
+)
 
 
 @login_required
@@ -39,6 +50,20 @@ class AnalysisDomainListView(LoginRequiredMixin, generic.ListView):
     template_name = "hub/domain_list.html"
     paginate_by = 5
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["search_form"] = AnalysisDomainSearchForm(initial={"name": name})
+        return context
+
+    def get_queryset(self):
+        form = AnalysisDomainSearchForm(self.request.GET)
+        if form.is_valid():
+            return AnalysisDomain.objects.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
+        return AnalysisDomain.objects.all()
+
 
 class AnalysisDomainCreateView(LoginRequiredMixin, generic.CreateView):
     model = AnalysisDomain
@@ -68,6 +93,20 @@ class DatasetListView(LoginRequiredMixin, generic.ListView):
     context_object_name = "dataset_list"
     template_name = "hub/dataset_list.html"
     paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["search_form"] = DatasetSearchForm(initial={"name": name})
+        return context
+
+    def get_queryset(self):
+        form = DatasetSearchForm(self.request.GET)
+        if form.is_valid():
+            return Dataset.objects.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
+        return Dataset.objects.all()
 
 
 class DatasetCreateView(LoginRequiredMixin, generic.CreateView):
@@ -99,8 +138,18 @@ class AnalysisProjectListView(LoginRequiredMixin, generic.ListView):
     template_name = "hub/project_list.html"
     paginate_by = 5
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        title = self.request.GET.get("title", "")
+        context["search_form"] = AnalysisProjectSearchForm(initial={"title": title})
+        return context
+
     def get_queryset(self):
-        return AnalysisProject.objects.select_related("domain")
+        queryset = AnalysisProject.objects.select_related("domain")
+        form = AnalysisProjectSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(title__icontains=form.cleaned_data["title"])
+        return queryset
 
 
 class AnalysisProjectDetailView(LoginRequiredMixin, generic.DetailView):
@@ -150,6 +199,20 @@ class DataAnalystListView(LoginRequiredMixin, generic.ListView):
     context_object_name = "analyst_list"
     template_name = "hub/analyst_list.html"
     paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        username = self.request.GET.get("username", "")
+        context["search_form"] = DataAnalystSearchForm(initial={"username": username})
+        return context
+
+    def get_queryset(self):
+        form = DataAnalystSearchForm(self.request.GET)
+        if form.is_valid():
+            return DataAnalyst.objects.filter(
+                username__icontains=form.cleaned_data["username"]
+            )
+        return DataAnalyst.objects.all()
 
 
 class DataAnalystDetailView(LoginRequiredMixin, generic.DetailView):
