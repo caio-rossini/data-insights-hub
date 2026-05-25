@@ -1,0 +1,49 @@
+{% extends "hub/base.html" %}
+
+{% block title %}Analyst: {{ dataanalyst.username }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="fa-solid fa-user-tie text-warning me-2"></i> {{ dataanalyst.username }}'s Profile</h1>
+    {% if user.id == dataanalyst.id %}
+        <a href="{% url 'hub:analyst-update' pk=dataanalyst.id %}" class="btn btn-outline-warning text-dark fw-bold">
+            <i class="fa-solid fa-user-pen"></i> Edit My Profile
+        </a>
+    {% endif %}
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 text-center p-4">
+            <div class="display-1 text-warning mb-3"><i class="fa-solid fa-circle-user"></i></div>
+            <h4 class="mb-0">{{ dataanalyst.first_name }} {{ dataanalyst.last_name }}</h4>
+            <p class="text-muted">{{ dataanalyst.position|default:"Data Analyst" }}</p>
+            <hr>
+            <div class="text-start">
+                <p><strong><i class="fa-solid fa-envelope me-2 text-secondary"></i> Email:</strong> <br>{{ dataanalyst.email }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white fw-bold"><i class="fa-solid fa-briefcase me-2 text-primary"></i> Current Projects</div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    {% for project in dataanalyst.analysis_projects.all %}
+                        <a href="{% url 'hub:project-detail' pk=project.id %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1 fw-bold">{{ project.title }}</h6>
+                                <small class="text-muted">Deadline: {{ project.deadline }}</small>
+                            </div>
+                            <small class="text-info">{{ project.domain.name }}</small>
+                        </a>
+                    {% empty %}
+                        <p class="text-muted py-3">This analyst is not assigned to any projects yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
