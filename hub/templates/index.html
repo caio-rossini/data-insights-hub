@@ -1,0 +1,65 @@
+{% extends "hub/base.html" %}
+
+{% block title %}Dashboard - Data Insights Hub{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Data Science & Research Dashboard</h1>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card shadow-sm h-100 card-counter border-start border-primary border-4">
+            <div class="card-body d-flex align-items-center">
+                <div class="fs-1 text-primary me-3"><i class="fa-solid fa-diagram-project"></i></div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1">Analysis Projects</h6>
+                    <h2 class="card-title mb-0 font-weight-bold">{{ num_projects }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card shadow-sm h-100 card-counter border-start border-success border-4">
+            <div class="card-body d-flex align-items-center">
+                <div class="fs-1 text-success me-3"><i class="fa-solid fa-database"></i></div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1">Mapped Datasets</h6>
+                    <h2 class="card-title mb-0 font-weight-bold">{{ num_datasets }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card shadow-sm h-100 card-counter border-start border-info border-4">
+            <div class="card-body d-flex align-items-center">
+                <div class="fs-1 text-info me-3"><i class="fa-solid fa-tags"></i></div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1">Research Domains</h6>
+                    <h2 class="card-title mb-0 font-weight-bold">{{ num_domains }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card shadow-sm h-100 card-counter border-start border-warning border-4">
+            <div class="card-body d-flex align-items-center">
+                <div class="fs-1 text-warning me-3"><i class="fa-solid fa-users"></i></div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1">Active Analysts</h6>
+                    <h2 class="card-title mb-0 font-weight-bold">{{ num_analysts }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm p-4 text-center bg-dark text-white rounded-3">
+            <h5 class="mb-2"><i class="fa-solid fa-chart-line text-info me-2"></i> Session Tracking</h5>
+            <p class="mb-0 text-muted">You have visited this dashboard <span class="badge bg-info text-dark fs-6">{{ num_visits }}</span> times during this session.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
