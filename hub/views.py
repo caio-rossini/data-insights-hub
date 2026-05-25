@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms import CheckboxSelectMultiple
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -11,6 +12,7 @@ from .forms import (
     DataAnalystSearchForm,
     DatasetSearchForm,
     DataAnalystCreationForm,
+    AnalysisProjectForm,
 )
 from .models import (
     AnalysisDomain,
@@ -160,26 +162,16 @@ class AnalysisProjectDetailView(LoginRequiredMixin, generic.DetailView):
 
 class AnalysisProjectCreateView(LoginRequiredMixin, generic.CreateView):
     model = AnalysisProject
-    fields = "__all__"
+    form_class = AnalysisProjectForm
     template_name = "hub/project_form.html"
     success_url = reverse_lazy("hub:project-list")
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        form.fields["assignees"].widget = CheckboxSelectMultiple()
-        return form
 
 
 class AnalysisProjectUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = AnalysisProject
-    fields = "__all__"
+    form_class = AnalysisProjectForm
     template_name = "hub/project_form.html"
     success_url = reverse_lazy("hub:project-list")
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        form.fields["assignees"].widget = CheckboxSelectMultiple()
-        return form
 
 
 class AnalysisProjectDeleteView(LoginRequiredMixin, generic.DeleteView):

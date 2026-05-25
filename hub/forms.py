@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
+from .models import AnalysisProject
 
 class AnalysisProjectSearchForm(forms.Form):
     title = forms.CharField(
@@ -64,3 +65,12 @@ class DataAnalystCreationForm(forms.ModelForm):
         fields = [
             "username", "email", "password", "first_name", "last_name", "position"
         ]
+
+
+class AnalysisProjectForm(forms.ModelForm):
+    class Meta:
+        model = AnalysisProject
+        fields = "__all__"
+        widgets = {
+            "assignees": forms.CheckboxSelectMultiple(),
+        }
