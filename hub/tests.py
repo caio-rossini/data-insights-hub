@@ -6,7 +6,7 @@ from .models import AnalysisDomain, AnalysisProject
 
 
 class PublicViewTests(TestCase):
-    """Testes para garantir que rotas privadas exijam login."""
+    """Tests for ensuring private routes require login."""
 
     def test_dashboard_requires_login(self):
         response = self.client.get(reverse("hub:index"))
@@ -19,10 +19,9 @@ class PublicViewTests(TestCase):
 
 
 class PrivateViewTests(TestCase):
-    """Testes para usuários autenticados e lógica de negócios."""
+    """Tests for authenticated users and business logic."""
 
     def setUp(self):
-        # Cria um analista de teste
         self.user = get_user_model().objects.create_user(
             username="test_analyst",
             password="securepassword123",
@@ -30,10 +29,8 @@ class PrivateViewTests(TestCase):
         )
         self.client.login(username="test_analyst", password="securepassword123")
 
-        # Cria um domínio de teste
         self.domain = AnalysisDomain.objects.create(name="Machine Learning")
 
-        # Cria projetos de teste
         self.project_1 = AnalysisProject.objects.create(
             title="Predictive Maintenance",
             description="Using IoT data to predict machine failures.",
@@ -50,7 +47,8 @@ class PrivateViewTests(TestCase):
         )
 
     def test_dashboard_metrics_render_correctly(self):
-        """Garante que o dashboard exibe a quantidade exata de registros."""
+        """Ensure dashboard metrics are accurate."""
+
         response = self.client.get(reverse("hub:index"))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["num_projects"], 2)
@@ -58,25 +56,23 @@ class PrivateViewTests(TestCase):
         self.assertEqual(response.context["num_analysts"], 1)
 
     def test_project_search_filter_works(self):
-        """Valida se o formulário de busca filtra os projetos pelo título."""
-        # Busca por um termo que só existe no projeto 1
+        """Ensure the search form filters projects by title."""
+
         response = self.client.get(reverse("hub:project-list"), {"title": "Predictive"})
         self.assertEqual(response.status_code, 200)
-        
-        # O projeto 1 deve estar na lista, o projeto 2 não
+
         project_list = response.context["project_list"]
         self.assertIn(self.project_1, project_list)
         self.assertNotIn(self.project_2, project_list)
 
     def test_toggle_assign_to_project(self):
-        """Testa a função de entrar e sair de um projeto com um clique."""
+        """Test toggle assign/unassign to project with one click."""
+
         url = reverse("hub:toggle-project-assign", kwargs={"pk": self.project_1.id})
-        
-        # 1. Primeiro clique: Adiciona o analista ao projeto
+
         response = self.client.get(url)
         self.assertRedirects(response, reverse("hub:project-detail", kwargs={"pk": self.project_1.id}))
         self.assertIn(self.user, self.project_1.assignees.all())
 
-        # 2. Segundo clique: Remove o analista do projeto
         response = self.client.get(url)
         self.assertNotIn(self.user, self.project_1.assignees.all())

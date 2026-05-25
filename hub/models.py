@@ -34,18 +34,15 @@ class AnalysisProject(models.Model):
     description = models.TextField()
     deadline = models.DateField()
     is_completed = models.BooleanField(default=False)
-    
-    # Relacionamento 1:N (Um domínio tem vários projetos)
+
     domain = models.ForeignKey(
         AnalysisDomain, 
         on_delete=models.CASCADE, 
         related_name="projects"
     )
-    
-    # Relacionamento N:N (Um projeto usa vários datasets e vice-versa)
+
     datasets = models.ManyToManyField(Dataset, related_name="projects")
-    
-    # Relacionamento N:N (Vários analistas podem trabalhar em vários projetos)
+
     assignees = models.ManyToManyField(DataAnalyst, related_name="projects")
 
     def __str__(self) -> str:

@@ -46,7 +46,6 @@ def index(request):
 
 # ---- ANALYSIS DOMAIN VIEWS ----
 
-
 class AnalysisDomainListView(LoginRequiredMixin, generic.ListView):
     model = AnalysisDomain
     context_object_name = "domain_list"
@@ -90,7 +89,6 @@ class AnalysisDomainDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 # ---- DATASET VIEWS ----
 
-
 class DatasetListView(LoginRequiredMixin, generic.ListView):
     model = Dataset
     context_object_name = "dataset_list"
@@ -133,7 +131,6 @@ class DatasetDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 # ---- ANALYSIS PROJECT VIEWS ---
-
 
 class AnalysisProjectListView(LoginRequiredMixin, generic.ListView):
     model = AnalysisProject
@@ -195,7 +192,6 @@ def toggle_assign_to_project(request, pk):
 
 
 # ---- DATA ANALYST VIEWS ----
-
 
 class DataAnalystListView(LoginRequiredMixin, generic.ListView):
     model = DataAnalyst
