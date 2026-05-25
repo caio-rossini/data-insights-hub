@@ -35,7 +35,26 @@
 </div>
 
 <style>
-    /* Estiliza os widgets padrão do Django para ficarem com cara de Bootstrap */
-    input, select, textarea { display: block; width: 100%; padding: .375rem .75rem; border: 1px solid #dee2e6; border-radius: .375rem; }
+    input[type="text"], input[type="date"], select, textarea { 
+        display: block; 
+        width: 100%; 
+        padding: .375rem .75rem; 
+        border: 1px solid #dee2e6; 
+        border-radius: .375rem; 
+    }
+    /* Melhora o espaçamento dos checkboxes de analistas */
+    input[type="checkbox"] {
+        margin-right: 8px;
+        transform: scale(1.1);
+        cursor: pointer;
+    }
+    ul#id_assignees {
+        list-style: none;
+        padding-left: 0;
+        margin-top: 5px;
+    }
+    ul#id_assignees li {
+        margin-bottom: 8px;
+    }
 </style>
 {% endblock %}
