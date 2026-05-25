@@ -10,6 +10,7 @@ from .forms import (
     AnalysisProjectSearchForm,
     DataAnalystSearchForm,
     DatasetSearchForm,
+    DataAnalystCreationForm,
 )
 from .models import (
     AnalysisDomain,
@@ -222,9 +223,7 @@ class DataAnalystDetailView(LoginRequiredMixin, generic.DetailView):
 
 class DataAnalystCreateView(LoginRequiredMixin, generic.CreateView):
     model = DataAnalyst
-    fields = [
-        "username", "email", "password", "first_name", "last_name", "position"
-    ]
+    form_class = DataAnalystCreationForm
     template_name = "hub/analyst_form.html"
     success_url = reverse_lazy("hub:analyst-list")
 

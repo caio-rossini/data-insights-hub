@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth import get_user_model
+
 
 class AnalysisProjectSearchForm(forms.Form):
     title = forms.CharField(
@@ -46,3 +48,19 @@ class AnalysisDomainSearchForm(forms.Form):
             "placeholder": "Search domains by name..."
         })
     )
+
+
+class DataAnalystCreationForm(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            "class": "form-control",
+            "placeholder": "Enter a secure password"
+        }),
+        label="Password"
+    )
+
+    class Meta:
+        model = get_user_model()
+        fields = [
+            "username", "email", "password", "first_name", "last_name", "position"
+        ]
