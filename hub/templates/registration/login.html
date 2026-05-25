@@ -1,0 +1,41 @@
+{% extends "hub/base.html" %}
+
+{% block title %}Login - Data Insights Hub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-5">
+        <div class="card shadow border-0 rounded-3">
+            <div class="card-body p-5">
+                <h3 class="card-title text-center mb-4">
+                    <i class="fa-solid fa-chart-network text-info"></i> Sign In to Hub
+                </h3>
+                
+                <form method="post" action="">
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            Your username and password didn't match. Please try again.
+                        </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Username</label>
+                        <input type="text" name="username" autofocus required id="id_username" class="form-control">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="id_password" class="form-label">Password</label>
+                        <input type="password" name="password" required id="id_password" class="form-control">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 font-weight-bold">
+                        <i class="fa-solid fa-right-to-bracket me-2"></i> Login
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
